@@ -9,7 +9,7 @@ const Navbar = () => {
                 <h4 className="text-lg font-medium">01755288840</h4>
                 <div className="flex items-center gap-1"><div className="badge badge-warning badge-xs"></div> <p className="font-medium">Pending</p></div>
             </div>
-            <div><p className="px-4 py-2 border-2 hover:bg-blue-300 hover:text-white border-blue-300 rounded-full cursor-pointer font-medium">Balance</p></div>
+            <div><p className="px-5 py-2 border-2 hover:bg-blue-300 hover:text-white border-blue-300 rounded-full cursor-pointer font-medium">Balance</p></div>
             <div>
                 <div className="drawer drawer-end">
                     <input id="my-drawer-4" type="checkbox" className="drawer-toggle" />

@@ -4,16 +4,16 @@ import Home from "../pages/Home";
 import PrivateRoute from "./PrivateRoute";
 
 const router = createBrowserRouter([
-    {
-      path: "/",
-      element: <MainLayout></MainLayout>,
-      children: [
-        {
-            path: "/",
-            element: <PrivateRoute><Home></Home></PrivateRoute>
-        }
-      ]
-    },
-  ]);
+  {
+    path: "/",
+    element: <MainLayout></MainLayout>,
+    children: [
+      {
+        path: "/",
+        element: <PrivateRoute><Home></Home></PrivateRoute>
+      }
+    ]
+  },
+]);
 
 export default router;
