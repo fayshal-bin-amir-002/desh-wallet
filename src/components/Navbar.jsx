@@ -1,13 +1,25 @@
+import { useContext } from "react";
 import { HiBars3BottomRight } from "react-icons/hi2";
 import { Link } from "react-router-dom";
+import { AuthContext } from "../Provider/AuthProvider";
+import { RiVerifiedBadgeFill } from "react-icons/ri";
 
 const Navbar = () => {
+
+    const { user } = useContext(AuthContext); console.log(user);
 
     return (
         <nav className="flex justify-between items-center">
             <div>
-                <h4 className="text-lg font-medium">01755288840</h4>
-                <div className="flex items-center gap-1"><div className="badge badge-warning badge-xs"></div> <p className="font-medium">Pending</p></div>
+                <h4 className="text-lg font-medium">{user?.name}</h4>
+                <div className="flex items-center gap-1">
+                    {
+                        user?.status === 'pending' ?
+                            <><div className="badge badge-warning badge-xs"></div> <p className="font-medium capitalize">{user?.status}</p></> :
+                            <><RiVerifiedBadgeFill className="text-green-500" />
+                                <p className="font-medium capitalize">{user?.status}</p></>
+                    }
+                </div>
             </div>
             <div><p className="px-5 py-2 border-2 hover:bg-blue-300 hover:text-white border-blue-300 rounded-full cursor-pointer font-medium">Balance</p></div>
             <div>
