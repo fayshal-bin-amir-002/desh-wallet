@@ -5,7 +5,7 @@ import { Navigate } from "react-router-dom";
 
 const Login = () => {
 
-    const { createUser, user } = useContext(AuthContext);
+    const { createUser, userLogin, user } = useContext(AuthContext);
 
     const handleLogin = (e) => {
         e.preventDefault();
@@ -14,6 +14,8 @@ const Login = () => {
         const pin = form.pin.value;
         if(acc.trim() === '' || pin.trim() === '') return toast.error("Please fill the form properly!");
         if (isNaN(Number(pin)) || pin.length !== 5) return toast.error("Pin must be only 5 digits!");
+        const user = {acc, pin};
+        userLogin(user);
     }
 
     const handleRegister = (e) => {
@@ -42,7 +44,7 @@ const Login = () => {
                             {/* login form */}
                             <form onSubmit={handleLogin} className="space-y-8">
                                 <div className="space-y-4">
-                                    <input name="account" type="text" placeholder="Enter Your Email" className="input input-bordered w-full focus:outline-0" required />
+                                    <input name="account" type="text" placeholder="Enter Your Email/Phone" className="input input-bordered w-full focus:outline-0" required />
                                     <input name="pin" type="password" placeholder="Enter Your Pin (5 digit)" className="input input-bordered w-full focus:outline-0" required />
                                 </div>
                                 <div className="text-right">

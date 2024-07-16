@@ -14,9 +14,22 @@ const AuthProvider = ({ children }) => {
         try {
             setLoading(true);
             const { data } = await axios.post("http://localhost:3000/add-user", userData);
-            console.log(data);
             if (!data?.result?.insertedId) return toast.error("User already exists!");
             localStorage.setItem("user", JSON.stringify(data?.regUser));
+            setUser(JSON.parse(localStorage.getItem("user")));
+            setLoading(false);
+        } catch (error) {
+            setLoading(false);
+            toast.error("Something went wrong");
+        }
+    }
+
+    const userLogin = async (userData) => {
+        try {
+            setLoading(true);
+            const { data } = await axios.post("http://localhost:3000/user", userData);
+            if(data?.message) return toast.error(data?.message);
+            localStorage.setItem("user", JSON.stringify(data));
             setUser(JSON.parse(localStorage.getItem("user")));
             setLoading(false);
         } catch (error) {
@@ -37,7 +50,7 @@ const AuthProvider = ({ children }) => {
         }
     }, [])
 
-    const contextData = { user, createUser, loading };
+    const contextData = { user, createUser, userLogin, loading };
 
     return (
         <AuthContext.Provider value={contextData}>

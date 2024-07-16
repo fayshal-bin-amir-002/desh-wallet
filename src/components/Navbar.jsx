@@ -6,7 +6,7 @@ import { RiVerifiedBadgeFill } from "react-icons/ri";
 
 const Navbar = () => {
 
-    const { user } = useContext(AuthContext); console.log(user);
+    const { user } = useContext(AuthContext);
 
     return (
         <nav className="flex justify-between items-center">
