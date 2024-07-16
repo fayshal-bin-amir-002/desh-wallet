@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { HiBars3BottomRight } from "react-icons/hi2";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../Provider/AuthProvider";
@@ -6,7 +6,14 @@ import { RiVerifiedBadgeFill } from "react-icons/ri";
 
 const Navbar = () => {
 
-    const { user } = useContext(AuthContext);
+    const { user, handleLogout } = useContext(AuthContext);
+    const [show, setShow] = useState(false);
+    const showBalance = () => {
+        setShow(true);
+        setTimeout(() => {
+            setShow(false);
+        }, 3000);
+    };
 
     return (
         <nav className="flex justify-between items-center">
@@ -21,7 +28,7 @@ const Navbar = () => {
                     }
                 </div>
             </div>
-            <div><p className="px-5 py-2 border-2 hover:bg-blue-300 hover:text-white border-blue-300 rounded-full cursor-pointer font-medium">Balance</p></div>
+            <div><p onClick={() => showBalance()} className="px-5 py-2 border-2 hover:bg-blue-300 hover:text-white border-blue-300 rounded-full cursor-pointer font-medium">{show ? `${user?.balance} $` : "Balance"}</p></div>
             <div>
                 <div className="drawer drawer-end">
                     <input id="my-drawer-4" type="checkbox" className="drawer-toggle" />
@@ -31,8 +38,13 @@ const Navbar = () => {
                     <div className="drawer-side">
                         <label htmlFor="my-drawer-4" aria-label="close sidebar" className="drawer-overlay"></label>
                         <ul className="menu bg-base-100 text-base-content bg-opacity-100 min-h-full w-80 p-4 space-y-2 text-base">
-                            <li className="bg-base-200 rounded-lg"><Link to="">Overviews</Link></li>
-                            <li className="bg-base-200 rounded-lg"><Link to="">Transitions</Link></li>
+                            <li className="bg-base-200 rounded-lg"><Link to="/">Home</Link></li>
+                            <li className="bg-base-200 rounded-lg"><Link to="/overviews">Overviews</Link></li>
+                            <li className="bg-base-200 rounded-lg"><Link to="/transitions">Transitions</Link></li>
+                            {
+                                user?.role === "admin" && <li className="bg-base-200 rounded-lg"><Link to="/user-managements">User Management</Link></li>
+                            }
+                            <li className="bg-base-200 rounded-lg"><button onClick={handleLogout}>Log Out</button></li>
                         </ul>
                     </div>
                 </div>

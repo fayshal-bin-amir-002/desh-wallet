@@ -7,6 +7,8 @@ export const AuthContext = createContext(null);
 
 const AuthProvider = ({ children }) => {
 
+    // const navigate = useNavigate();
+
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
 
@@ -14,6 +16,8 @@ const AuthProvider = ({ children }) => {
         try {
             setLoading(true);
             const { data } = await axios.post("http://localhost:3000/add-user", userData);
+            const { data: tokenData } = await axios.post("http://localhost:3000/jwt", userData); 
+            localStorage.setItem("access-token", tokenData?.token);
             if (!data?.result?.insertedId) return toast.error("User already exists!");
             localStorage.setItem("user", JSON.stringify(data?.regUser));
             setUser(JSON.parse(localStorage.getItem("user")));
@@ -28,7 +32,9 @@ const AuthProvider = ({ children }) => {
         try {
             setLoading(true);
             const { data } = await axios.post("http://localhost:3000/user", userData);
-            if(data?.message) return toast.error(data?.message);
+            const { data: tokenData } = await axios.post("http://localhost:3000/jwt", userData); 
+            localStorage.setItem("access-token", tokenData?.token);
+            if (data?.message) return toast.error(data?.message);
             localStorage.setItem("user", JSON.stringify(data));
             setUser(JSON.parse(localStorage.getItem("user")));
             setLoading(false);
@@ -36,6 +42,12 @@ const AuthProvider = ({ children }) => {
             setLoading(false);
             toast.error("Something went wrong");
         }
+    }
+
+    const handleLogout = () => {
+        localStorage.removeItem("user");
+        localStorage.removeItem("access-token");
+        setUser(null);
     }
 
     useEffect(() => {
@@ -50,7 +62,7 @@ const AuthProvider = ({ children }) => {
         }
     }, [])
 
-    const contextData = { user, createUser, userLogin, loading };
+    const contextData = { user, setUser, createUser, userLogin, handleLogout, loading };
 
     return (
         <AuthContext.Provider value={contextData}>
