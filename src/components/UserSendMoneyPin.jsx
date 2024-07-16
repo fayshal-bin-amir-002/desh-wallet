@@ -2,10 +2,17 @@ import PropTypes from 'prop-types';
 import { useContext, useRef } from 'react';
 import { AuthContext } from '../Provider/AuthProvider';
 import toast from 'react-hot-toast';
+import useAxiosSecure from '../hooks/useAxiosSecure';
+import Swal from 'sweetalert2';
+import { useNavigate } from 'react-router-dom';
 
-const UserSendMoneyPin = ({number, amount}) => {
+const UserSendMoneyPin = ({ number, amount }) => {
 
-    const { user } = useContext(AuthContext);
+    const { user, refetch } = useContext(AuthContext);
+
+    const navigate = useNavigate();
+
+    const axiosSecure = useAxiosSecure();
 
     const pinRef = useRef();
 
@@ -16,18 +23,30 @@ const UserSendMoneyPin = ({number, amount}) => {
         const receiverNumber = number;
         const sentAmount = Number(amount);
         let totalAmout = sentAmount;
-        if(sentAmount > 100) totalAmout = sentAmount + 5;
+        if (sentAmount > 100) totalAmout = sentAmount + 5;
         const d = new Date();
         const date = d.toLocaleDateString();
         const pin = pinRef.current.value;
 
-        if(senderNumber === receiverNumber) return toast.error("You can not sent to own!");
-        
-        const sendMoneyData =  {senderNumber, receiverNumber, sentAmount, totalAmout, date, pin, type};
-        
+        if (senderNumber === receiverNumber) return toast.error("You can not sent to own!");
+
+        const sendMoneyData = { senderNumber, receiverNumber, sentAmount, totalAmout, date, pin };
+
         try {
-            //
-        } catch(error) {
+            const { data } = await axiosSecure.post(`/send-money?email=${user?.email}&phone=${user?.phone}`, sendMoneyData);
+            
+            if (data.modifiedCount === 1) {
+                refetch();
+                Swal.fire({
+                    title: "Send",
+                    text: "Money have sent successfully!",
+                    icon: "success"
+                });
+                navigate("/");
+            } else {
+                toast.error(data?.message || "Something went wrong!");
+            }
+        } catch (error) {
             toast.error(error.message);
         }
     }
@@ -39,11 +58,11 @@ const UserSendMoneyPin = ({number, amount}) => {
                 <div className="space-y-4">
                     <input name="account" type="text" defaultValue={number} className="input input-bordered w-full focus:outline-0" readOnly />
                     <input name="amount" type="text" defaultValue={amount + " $"} className="input input-bordered w-full focus:outline-0" readOnly />
-                    <input name="total" type="text" defaultValue={`Total = ${amount}$ + ${amount > 100 ? "5$" : "0$" }`} className="input input-bordered w-full focus:outline-0" readOnly />
-                    <input ref={pinRef} name="pin" type="number" placeholder="Enter Pin" className="input input-bordered w-full focus:outline-0" required />
+                    <input name="total" type="text" defaultValue={`Total = ${amount}$ + ${amount > 100 ? "5$" : "0$"}`} className="input input-bordered w-full focus:outline-0" readOnly />
+                    <input ref={pinRef} name="pin" type="password" placeholder="Enter Pin" className="input input-bordered w-full focus:outline-0" required />
                 </div>
                 <div className="text-right">
-                    
+
                     <button type='submit' className="btn btn-outline btn-info text-lg">Send</button>
                 </div>
             </form>
