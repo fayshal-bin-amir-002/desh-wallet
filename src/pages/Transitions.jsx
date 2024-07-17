@@ -7,6 +7,7 @@ import CashInHisAgent from "../components/CashInHisAgent";
 import LoadingSpinner from "../components/LoadingSpinner";
 import AdminSendMoneyHis from "../components/AdminSendMoneyHis";
 import CashOutHisAgent from "../pages/CashOutHisAgent";
+import AdminCashInHis from "../components/AdminCashInHis";
 
 
 const Transitions = () => {
@@ -166,6 +167,7 @@ const Transitions = () => {
                     >
                         {user?.role === 'user' && <CashInHis></CashInHis>}
                         {user?.role === 'agent' && <CashInHisAgent></CashInHisAgent>}
+                        {user?.role === 'admin' && <AdminCashInHis></AdminCashInHis>}
                     </div>
                     <div
                         className={`px-6 py-4 ${tabSelected.currentTab === 3 ? "" : "hidden"
