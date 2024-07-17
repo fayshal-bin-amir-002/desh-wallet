@@ -5,6 +5,8 @@ import CashOutHis from "../components/CashOutHis";
 import { AuthContext } from "../Provider/AuthProvider";
 import CashInHisAgent from "../components/CashInHisAgent";
 import LoadingSpinner from "../components/LoadingSpinner";
+import AdminSendMoneyHis from "../components/AdminSendMoneyHis";
+import CashOutHisAgent from "../pages/CashOutHisAgent";
 
 
 const Transitions = () => {
@@ -65,7 +67,7 @@ const Transitions = () => {
         }
     })
 
-    if(loading || isLoading) return <LoadingSpinner></LoadingSpinner>
+    if (loading || isLoading) return <LoadingSpinner></LoadingSpinner>
 
     return (
         <div>
@@ -148,7 +150,9 @@ const Transitions = () => {
                             aria-labelledby="tab-label-1a"
                             tabIndex="-1"
                         >
-                            <SendMoneyHis></SendMoneyHis>
+                            {user?.role === 'user' && <SendMoneyHis></SendMoneyHis>}
+                            {user?.role === 'admin' && <AdminSendMoneyHis></AdminSendMoneyHis>}
+
                         </div>
                     }
                     <div
@@ -172,7 +176,8 @@ const Transitions = () => {
                         aria-labelledby="tab-label-3a"
                         tabIndex="-1"
                     >
-                        <CashOutHis></CashOutHis>
+                        {user?.role === 'user' && <CashOutHis></CashOutHis>}
+                        {user?.role === 'agent' && <CashOutHisAgent></CashOutHisAgent>}
                     </div>
                 </div>
             </section>

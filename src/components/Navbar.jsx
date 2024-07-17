@@ -28,7 +28,9 @@ const Navbar = () => {
                     }
                 </div>
             </div>
-            <div><p onClick={() => showBalance()} className="px-5 py-2 border-2 hover:bg-blue-300 hover:text-white border-blue-300 rounded-full cursor-pointer font-medium">{show ? `${user?.balance} $` : "Balance"}</p></div>
+            {
+                user?.role !== 'admin' && <div><p onClick={() => showBalance()} className="px-5 py-2 border-2 hover:bg-blue-300 hover:text-white border-blue-300 rounded-full cursor-pointer font-medium">{show ? `${user?.balance} $` : "Balance"}</p></div>
+            }
             <div>
                 <div className="drawer drawer-end">
                     <input id="my-drawer-4" type="checkbox" className="drawer-toggle" />
