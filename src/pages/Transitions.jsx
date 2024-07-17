@@ -8,6 +8,7 @@ import LoadingSpinner from "../components/LoadingSpinner";
 import AdminSendMoneyHis from "../components/AdminSendMoneyHis";
 import CashOutHisAgent from "../pages/CashOutHisAgent";
 import AdminCashInHis from "../components/AdminCashInHis";
+import AdminCashOutHis from "../components/AdminCashOutHis";
 
 
 const Transitions = () => {
@@ -180,6 +181,7 @@ const Transitions = () => {
                     >
                         {user?.role === 'user' && <CashOutHis></CashOutHis>}
                         {user?.role === 'agent' && <CashOutHisAgent></CashOutHisAgent>}
+                        {user?.role === 'admin' && <AdminCashOutHis></AdminCashOutHis>}
                     </div>
                 </div>
             </section>
