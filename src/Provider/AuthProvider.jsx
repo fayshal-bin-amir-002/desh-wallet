@@ -63,7 +63,7 @@ const AuthProvider = ({ children }) => {
         }
     }, [])
 
-    const { data: loggedUser = {}, refetch } = useQuery({
+    const { data: loggedUser = {}, refetch, isLoading } = useQuery({
         queryKey: ["user"],
         enabled: !loading && !!user,
         queryFn: async () => {
@@ -73,7 +73,7 @@ const AuthProvider = ({ children }) => {
         }
     })
 
-    const contextData = { user, setUser, createUser, userLogin, handleLogout, loading, refetch };
+    const contextData = { user, setUser, createUser, userLogin, handleLogout, loading, refetch, isLoading };
 
     return (
         <AuthContext.Provider value={contextData}>

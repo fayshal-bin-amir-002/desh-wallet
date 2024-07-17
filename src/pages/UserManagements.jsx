@@ -12,7 +12,7 @@ const UserManagements = () => {
     const axiosSecure = useAxiosSecure();
 
     const { data: users = [], isLoading, refetch } = useQuery({
-        queryKey: ["user"],
+        queryKey: ["usersAdmin"],
         enabled: !loading && !!user,
         queryFn: async () => {
             const { data } = await axiosSecure.get(`/users?email=${user?.email}&phone=${user?.phone}`);
@@ -44,7 +44,7 @@ const UserManagements = () => {
         console.log(id);
     }
 
-    if (isLoading) return <LoadingSpinner></LoadingSpinner>
+    if (loading || isLoading) return <LoadingSpinner></LoadingSpinner>
 
     return (
         <div>

@@ -30,22 +30,23 @@ const Services = () => {
             }
             {
                 user.role !== "admin" &&
-                <>
-                    <Link to="/cashIn">
-                        <div className="p-4 rounded-lg shadow-md w-[220px] text-center bg-yellow-50/40 cursor-pointer hover:scale-105 duration-700">
-                            <img src={cashin} alt="" className="size-[80px] inline mb-3" />
-                            <h3 className="text-3xl font-semibold">Cash In</h3>
-                        </div>
-                    </Link>
-                    <Link to="/cashOut">
-                        <div className="p-4 rounded-lg shadow-md w-[220px] text-center bg-sky-50/40 cursor-pointer hover:scale-105 duration-700">
-                            <img src={cashout} alt="" className="size-[80px] inline mb-3" />
-                            <h3 className="text-3xl font-semibold">Cash Out</h3>
-                        </div>
-                    </Link>
-                </>
+                <Link to={user?.role === 'user' ? '/cashIn' : '/cashInAgent'}>
+                    <div className="p-4 rounded-lg shadow-md w-[220px] text-center bg-yellow-50/40 cursor-pointer hover:scale-105 duration-700">
+                        <img src={cashin} alt="" className="size-[80px] inline mb-3" />
+                        <h3 className="text-3xl font-semibold">Cash In</h3>
+                    </div>
+                </Link>
             }
-        </div>
+            {
+                user.role === "user" &&
+                <Link to="/cashOut">
+                    <div className="p-4 rounded-lg shadow-md w-[220px] text-center bg-sky-50/40 cursor-pointer hover:scale-105 duration-700">
+                        <img src={cashout} alt="" className="size-[80px] inline mb-3" />
+                        <h3 className="text-3xl font-semibold">Cash Out</h3>
+                    </div>
+                </Link>
+            }
+        </div >
     );
 };
 

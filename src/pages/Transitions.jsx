@@ -3,11 +3,13 @@ import SendMoneyHis from "../components/SendMoneyHis";
 import CashInHis from "../components/CashInHis";
 import CashOutHis from "../components/CashOutHis";
 import { AuthContext } from "../Provider/AuthProvider";
+import CashInHisAgent from "../components/CashInHisAgent";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 
 const Transitions = () => {
 
-    const { user } = useContext(AuthContext);
+    const { user, loading, isLoading } = useContext(AuthContext);
 
     const [tabSelected, setTabSelected] = useState({
         currentTab: user?.role === 'agent' ? 2 : 1,
@@ -62,6 +64,8 @@ const Transitions = () => {
             window.removeEventListener("keydown", handleKeyDown)
         }
     })
+
+    if(loading || isLoading) return <LoadingSpinner></LoadingSpinner>
 
     return (
         <div>
@@ -156,7 +160,8 @@ const Transitions = () => {
                         aria-labelledby="tab-label-2a"
                         tabIndex="-1"
                     >
-                        <CashInHis></CashInHis>
+                        {user?.role === 'user' && <CashInHis></CashInHis>}
+                        {user?.role === 'agent' && <CashInHisAgent></CashInHisAgent>}
                     </div>
                     <div
                         className={`px-6 py-4 ${tabSelected.currentTab === 3 ? "" : "hidden"
