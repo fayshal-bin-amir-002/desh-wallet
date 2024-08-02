@@ -5,34 +5,32 @@ import { useQuery } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import LoadingSpinner from "../components/LoadingSpinner";
 
-const CashInAgent = () => {
+const AgentCashOut = () => {
 
-    const { user, loading, refetch } = useContext(AuthContext);
+    const { user, loading } = useContext(AuthContext);
 
     const axiosSecure = useAxiosSecure();
 
-    const { data: items = [], isLoading, refetch: reload } = useQuery({
-        queryKey: ["cashInRequestAgent"],
+    const { data: items = [], isLoading, refetch } = useQuery({
+        queryKey: ["cashOutRequestAgent"],
         enabled: !loading && !!user,
         queryFn: async () => {
-            const { data } = await axiosSecure.get(`/cashinRequestPendingAgent?email=${user?.email}&phone=${user?.phone}`);
+            const { data } = await axiosSecure.get(`/cashOutRequestPendingAgent?email=${user?.email}&phone=${user?.phone}`);
             return data;
         }
     })
 
-    const handleCashInReq = async (id, txt, number, amount) => {
-        const query = {id, txt, number, amount};
-
+    const handleCashOutReq = async (id, txt, number, amount, total) => {
+        const query = { id, txt, number, amount, total };
         try {
-            const { data } = await axiosSecure.patch(`/cashinRequestUpdate?email=${user?.email}&phone=${user?.phone}`, query);
-            if(data.modifiedCount === 1) {
-                toast.success("Cash In Request Updated!");
+            const { data } = await axiosSecure.patch(`/cashOutRequestUpdate?email=${user?.email}&phone=${user?.phone}`, query);
+            if (data.modifiedCount === 1) {
+                toast.success("Cash Out Request Updated!");
                 refetch();
-                reload();
             } else {
                 toast.error("Something went wrong!");
             }
-        } catch(error) {
+        } catch (error) {
             toast.error(error.message);
         }
     }
@@ -52,12 +50,12 @@ const CashInAgent = () => {
                     </tr>
                     {
                         items && items.map((item) => <tr key={item._id} className="block border-b sm:table-row last:border-b-0 border-slate-200 sm:border-none">
-                            <td data-th="Request Number" className="before:w-24 before:inline-block before:font-medium before:text-slate-700 before:content-[attr(data-th)':'] sm:before:content-none flex items-center sm:table-cell h-12 px-6 text-sm transition duration-300 sm:border-t sm:border-l first:border-l-0 border-slate-200 stroke-slate-500 text-slate-500 ">{item?.reqNumber}</td>
+                            <td data-th="Request Number" className="before:w-24 before:inline-block before:font-medium before:text-slate-700 before:content-[attr(data-th)':'] sm:before:content-none flex items-center sm:table-cell h-12 px-6 text-sm transition duration-300 sm:border-t sm:border-l first:border-l-0 border-slate-200 stroke-slate-500 text-slate-500 ">{item?.userNumber}</td>
                             <td data-th="Amount" className="before:w-24 before:inline-block before:font-medium before:text-slate-700 before:content-[attr(data-th)':'] sm:before:content-none flex items-center sm:table-cell h-12 px-6 text-sm transition duration-300 sm:border-t sm:border-l first:border-l-0 border-slate-200 stroke-slate-500 text-slate-500 ">{item?.amount} $</td>
                             <td data-th="Date" className="before:w-24 before:inline-block before:font-medium before:text-slate-700 before:content-[attr(data-th)':'] sm:before:content-none flex items-center sm:table-cell h-12 px-6 text-sm transition duration-300 sm:border-t sm:border-l first:border-l-0 border-slate-200 stroke-slate-500 text-slate-500 ">{item?.date}</td>
                             <td data-th="Actions" className={`before:w-24 before:inline-block before:font-medium before:text-slate-700 before:content-[attr(data-th)':'] sm:before:content-none flex items-center sm:table-cell h-12 px-6 text-sm transition duration-300 sm:border-t sm:border-l first:border-l-0 border-slate-200 stroke-slate-500 text-slate-500 capitalize font-semibold`}>
-                                <button onClick={() => handleCashInReq(item?._id, 'accept', item?.reqNumber, item?.amount)} className="btn btn-success btn-sm text-white mr-2">Accept</button>
-                                <button onClick={() => handleCashInReq(item?._id, 'reject', item?.reqNumber, item?.amount)} className="btn btn-error btn-sm text-white">Reject</button>
+                                <button onClick={() => handleCashOutReq(item?._id, 'accept', item?.userNumber, item?.amount, item?.total)} className="btn btn-success btn-sm text-white mr-2">Accept</button>
+                                <button onClick={() => handleCashOutReq(item?._id, 'reject', item?.userNumber, item?.amount, item?.total)} className="btn btn-error btn-sm text-white">Reject</button>
                             </td>
                         </tr>)
                     }
@@ -67,4 +65,4 @@ const CashInAgent = () => {
     );
 };
 
-export default CashInAgent;
+export default AgentCashOut;

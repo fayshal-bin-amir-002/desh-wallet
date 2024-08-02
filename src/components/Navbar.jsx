@@ -21,10 +21,13 @@ const Navbar = () => {
                 <h4 className="text-lg font-medium">{user?.name}</h4>
                 <div className="flex items-center gap-1">
                     {
-                        user?.status === 'pending' ?
-                            <><div className="badge badge-warning badge-xs"></div> <p className="font-medium capitalize">{user?.status}</p></> :
-                            <><RiVerifiedBadgeFill className="text-green-500" />
-                                <p className="font-medium capitalize">{user?.status}</p></>
+                        user?.status === 'pending' &&
+                        <><div className="badge badge-warning badge-xs"></div> <p className="font-medium capitalize">{user?.status}</p></>
+                    }
+                    {
+                        user?.status === 'verified' &&
+                        <><RiVerifiedBadgeFill className="text-green-500" />
+                            <p className="font-medium capitalize">{user?.status}</p></>
                     }
                 </div>
             </div>
@@ -34,8 +37,8 @@ const Navbar = () => {
             <div>
                 <div className="drawer drawer-end">
                     <input id="my-drawer-4" type="checkbox" className="drawer-toggle" />
-                    <div className="drawer-content">
-                        <label htmlFor="my-drawer-4" className="text-3xl cursor-pointer"><HiBars3BottomRight /></label>
+                    <div className="drawer-content hover:bg-blue-300 rounded-full p-1.5 group duration-300 cursor-pointer">
+                        <label htmlFor="my-drawer-4" className="text-3xl cursor-pointer group-hover:text-white"><HiBars3BottomRight /></label>
                     </div>
                     <div className="drawer-side">
                         <label htmlFor="my-drawer-4" aria-label="close sidebar" className="drawer-overlay"></label>

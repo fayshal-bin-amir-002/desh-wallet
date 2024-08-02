@@ -38,7 +38,7 @@ const Services = () => {
                 </Link>
             }
             {
-                user.role === "user" &&
+                user.role !== "admin" &&
                 <Link to="/cashOut">
                     <div className="p-4 rounded-lg shadow-md w-[220px] text-center bg-sky-50/40 cursor-pointer hover:scale-105 duration-700">
                         <img src={cashout} alt="" className="size-[80px] inline mb-3" />
