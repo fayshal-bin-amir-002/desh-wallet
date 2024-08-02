@@ -9,7 +9,7 @@ const Home = () => {
     const { user, setUser } = useContext(AuthContext);
 
     useEffect(() => {
-        fetch(`http://localhost:3000/userData/${user?.email}`)
+        fetch(`https://desh-wallet-server.vercel.app/userData/${user?.email}`)
             .then(res => res.json())
             .then(data => setUser(data))
     }, [user?.email, setUser])

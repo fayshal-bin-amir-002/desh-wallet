@@ -16,8 +16,8 @@ const AuthProvider = ({ children }) => {
     const createUser = async (userData) => {
         try {
             setLoading(true);
-            const { data } = await axios.post("http://localhost:3000/add-user", userData);
-            const { data: tokenData } = await axios.post("http://localhost:3000/jwt", userData);
+            const { data } = await axios.post("https://desh-wallet-server.vercel.app/add-user", userData);
+            const { data: tokenData } = await axios.post("https://desh-wallet-server.vercel.app/jwt", userData);
             localStorage.setItem("access-token", tokenData?.token);
             if (!data?.result?.insertedId) return toast.error("User already exists!");
             localStorage.setItem("user", JSON.stringify(data?.regUser));
@@ -32,8 +32,8 @@ const AuthProvider = ({ children }) => {
     const userLogin = async (userData) => {
         try {
             setLoading(true);
-            const { data } = await axios.post("http://localhost:3000/user", userData);
-            const { data: tokenData } = await axios.post("http://localhost:3000/jwt", userData);
+            const { data } = await axios.post("https://desh-wallet-server.vercel.app/user", userData);
+            const { data: tokenData } = await axios.post("https://desh-wallet-server.vercel.app/jwt", userData);
             localStorage.setItem("access-token", tokenData?.token);
             if (data?.message) return toast.error(data?.message);
             localStorage.setItem("user", JSON.stringify(data));
@@ -67,7 +67,7 @@ const AuthProvider = ({ children }) => {
         queryKey: ["user"],
         enabled: !loading && !!user,
         queryFn: async () => {
-            const { data } = await axios.get(`http://localhost:3000/userData/${user?.email}`);
+            const { data } = await axios.get(`https://desh-wallet-server.vercel.app/userData/${user?.email}`);
             setUser(data);
             return data;
         }
