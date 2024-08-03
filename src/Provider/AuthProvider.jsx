@@ -12,6 +12,7 @@ const AuthProvider = ({ children }) => {
 
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [spinLoading, setSpinLoading] = useState(false);
 
     const createUser = async (userData) => {
         try {
@@ -19,12 +20,17 @@ const AuthProvider = ({ children }) => {
             const { data } = await axios.post("https://desh-wallet-server.vercel.app/add-user", userData);
             const { data: tokenData } = await axios.post("https://desh-wallet-server.vercel.app/jwt", userData);
             localStorage.setItem("access-token", tokenData?.token);
-            if (!data?.result?.insertedId) return toast.error("User already exists!");
+            if (!data?.result?.insertedId) {
+                setSpinLoading(false);
+                return toast.error("User already exists!");
+            }
             localStorage.setItem("user", JSON.stringify(data?.regUser));
             setUser(JSON.parse(localStorage.getItem("user")));
             setLoading(false);
+            setSpinLoading(false);
         } catch (error) {
             setLoading(false);
+            setSpinLoading(false);
             toast.error("Something went wrong");
         }
     }
@@ -35,12 +41,17 @@ const AuthProvider = ({ children }) => {
             const { data } = await axios.post("https://desh-wallet-server.vercel.app/user", userData);
             const { data: tokenData } = await axios.post("https://desh-wallet-server.vercel.app/jwt", userData);
             localStorage.setItem("access-token", tokenData?.token);
-            if (data?.message) return toast.error(data?.message);
+            if (data?.message) {
+                setSpinLoading(false);
+                return toast.error(data?.message);
+            }
             localStorage.setItem("user", JSON.stringify(data));
             setUser(JSON.parse(localStorage.getItem("user")));
             setLoading(false);
+            setSpinLoading(false);
         } catch (error) {
             setLoading(false);
+            setSpinLoading(false);
             toast.error("Something went wrong");
         }
     }
@@ -73,7 +84,7 @@ const AuthProvider = ({ children }) => {
         }
     })
 
-    const contextData = { user, setUser, createUser, userLogin, handleLogout, loading, refetch, isLoading };
+    const contextData = { user, setUser, createUser, userLogin, handleLogout, loading, refetch, isLoading, spinLoading, setSpinLoading };
 
     return (
         <AuthContext.Provider value={contextData}>

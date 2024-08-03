@@ -26,7 +26,7 @@ const UserCashOut = () => {
         const status = 'success';
         const cashOutData = { amount, total, agentNumber, userNumber, pin, date, status };
 
-        if(user?.balance < total) return toast.error("Insufficient balance!");
+        if(user?.balance < total) return toast.error("Insufficient balance! Total: " + total);
 
         try {
             const { data } = await axiosSecure.post(`/cashOut?email=${user?.email}&phone=${user?.phone}`, cashOutData);

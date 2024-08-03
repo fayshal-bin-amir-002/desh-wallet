@@ -2,36 +2,51 @@ import { useContext } from "react";
 import toast from "react-hot-toast";
 import { AuthContext } from "../Provider/AuthProvider";
 import { Navigate } from "react-router-dom";
+import { CgSpinnerTwo } from "react-icons/cg";
 
 const Login = () => {
 
-    const { createUser, userLogin, user } = useContext(AuthContext);
+    const { createUser, userLogin, user, spinLoading, setSpinLoading } = useContext(AuthContext); 
 
     const handleLogin = (e) => {
+        setSpinLoading(true);
         e.preventDefault();
         const form = e.target;
         const acc = form.account.value;
         const pin = form.pin.value;
-        if(acc.trim() === '' || pin.trim() === '') return toast.error("Please fill the form properly!");
-        if (isNaN(Number(pin)) || pin.length !== 5) return toast.error("Pin must be only 5 digits!");
-        const user = {acc, pin};
+        if (acc.trim() === '' || pin.trim() === '') {
+            setSpinLoading(false);
+            return toast.error("Please fill the form properly!");
+        }
+        if (isNaN(Number(pin)) || pin.length !== 5) {
+            setSpinLoading(false);
+            return toast.error("Pin must be only 5 digits!");
+        }
+        const user = { acc, pin };
         userLogin(user);
     }
 
     const handleRegister = (e) => {
+        setSpinLoading(true);
         e.preventDefault();
         const form = e.target;
         const name = form.name.value;
         const email = form.email.value;
         const phone = form.phone.value;
         const pin = form.pin.value;
-        if(email.trim() === '' || pin.trim() === '' || name.trim() === '' || phone.trim() === '') return toast.error("Please fill the form properly!");
-        if (isNaN(Number(pin)) || pin.length !== 5) return toast.error("Pin must be only 5 digits!");
-        const newuser = {name, email, phone, pin};
+        if (email.trim() === '' || pin.trim() === '' || name.trim() === '' || phone.trim() === '') {
+            setSpinLoading(false);
+            return toast.error("Please fill the form properly!");
+        }
+        if (isNaN(Number(pin)) || pin.length !== 5) {
+            setSpinLoading(false);
+            return toast.error("Pin must be only 5 digits!");
+        }
+        const newuser = { name, email, phone, pin };
         createUser(newuser);
     }
 
-    if(user) return <Navigate to={"/"}></Navigate>
+    if (user) return <Navigate to={"/"}></Navigate>
 
     return (
         <div className="bg-gradient-to-br from-violet-800/10 to-sky-400/10 min-h-screen p-4 flex justify-center items-center">
@@ -48,7 +63,7 @@ const Login = () => {
                                     <input name="pin" type="password" placeholder="Enter Your Pin (5 digit)" className="input input-bordered w-full focus:outline-0" required />
                                 </div>
                                 <div className="text-right">
-                                    <button type="submit" className="btn btn-outline btn-info text-lg">Login</button>
+                                    <button type="submit" className="btn btn-outline btn-info text-lg disabled:cursor-not-allowed" disabled={spinLoading}>{spinLoading ? <CgSpinnerTwo className="inline animate-spin" /> : "Login"}</button>
                                 </div>
                             </form>
                         </div>
@@ -70,7 +85,7 @@ const Login = () => {
                                     <input name="pin" type="password" placeholder="Enter Your Pin (5 digit)" className="input input-bordered w-full focus:outline-0" required />
                                 </div>
                                 <div className="text-right">
-                                    <button type="submit" className="btn btn-outline btn-info text-lg">Register</button>
+                                    <button type="submit" className="btn btn-outline btn-info text-lg disabled:cursor-not-allowed" disabled={spinLoading}>{spinLoading ? <CgSpinnerTwo className="inline animate-spin" /> : "Register"}</button>
                                 </div>
                             </form>
                         </div>

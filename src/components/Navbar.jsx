@@ -6,9 +6,10 @@ import { RiVerifiedBadgeFill } from "react-icons/ri";
 
 const Navbar = () => {
 
-    const { user, handleLogout } = useContext(AuthContext);
+    const { user, handleLogout, refetch } = useContext(AuthContext);
     const [show, setShow] = useState(false);
-    const showBalance = () => {
+    const showBalance = async () => {
+        refetch();
         setShow(true);
         setTimeout(() => {
             setShow(false);
