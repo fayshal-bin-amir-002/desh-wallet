@@ -3,7 +3,7 @@
 Desh wallet is a mobile financial service web application.
 - We can transfer money through it.
 - Send money to another user.
-- Cash in or cash out throuth a agent.
+- Cash in or cash out through a agent.
 
 [Live Link](https://desh-wallet.netlify.app)
 
