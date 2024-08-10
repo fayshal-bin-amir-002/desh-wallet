@@ -1,8 +1,15 @@
-# React + Vite
+# Desh Wallet
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Desh wallet is a mobile financial service web application.
+- We can transfer money through it.
+- Send money to another user.
+- Cash in or cash out throuth a agent.
 
-Currently, two official plugins are available:
+[Live Link](https://desh-wallet.netlify.app)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Technologies: 
+- React
+- Tailwind CSS
+- Mongodb
+- Node js
+- Express js
